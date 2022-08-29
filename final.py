@@ -2,16 +2,23 @@ def store(username, password):
     hashed_password = hash1(password)
     print(hashed_password)
     details = [username, hashed_password]
-    with open(r'D:\Users\Nisar\Documents\GitHub\Bank1\database.txt', 'w') as fp:
-        for item in details:
-            fp.write("%s\n" % item)
+    file = open("database.txt","a")
+    file.write(str(username))
+    file.write(" ")
+    file.write(str(hashed_password))
+    file.write("\n")
+    file.close()
 
 
 def login(username, password):
     
-    hashed_password = hash1(password)
-    with open(r'D:\Users\Nisar\Documents\GitHub\Bank1\database.txt', 'w') as fp:
-        if database[username] == hashed_password:
+    hashed_password1 = str(hash1(password))
+    print(hashed_password1)
+    for line in open("database.txt","r").readlines(): 
+        login_info = line.split()
+        print(login_info[0])
+        print(login_info[1])
+        if username == login_info[0] and hashed_password1 == login_info[1]:
             print("Success")
             return True
         else:
