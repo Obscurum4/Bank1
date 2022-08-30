@@ -1,29 +1,36 @@
 def store(username, password):
-    hashed_password = hash1(password)
-    print(hashed_password)
+    hashed_password = str(hash1(password))
     details = [username, hashed_password]
-    file = open("database.txt","a")
-    file.write(str(username))
-    file.write(" ")
-    file.write(str(hashed_password))
-    file.write("\n")
-    file.close()
+    f = open("database.txt",'r')
+    info = f.read()
+    if username in info:     
+        print ("Name Unavailable. Please Try Again")
+        return main()
+    f.close() 
+    f = open("database.txt",'w')
+    info = info + " " +username + " " + hashed_password
+    f.write(info)
+    f.close()
+    main()
 
 
 def login(username, password):
-    
     hashed_password1 = str(hash1(password))
-    print(hashed_password1)
-    for line in open("database.txt","r").readlines(): 
-        login_info = line.split()
-        print(login_info[0])
-        print(login_info[1])
-        if username == login_info[0] and hashed_password1 == login_info[1]:
+    f = open("database.txt",'r')
+    info = f.read()
+    info = info.split()
+    if username in info:
+        index = info.index(username) + 1
+        usr_password = info[index]
+        if hashed_password1 == usr_password:
             print("Success")
             return True
         else:
-            print("Failure")
+            print("1st Failure")
             return False
+    else:
+        print("Failure")
+        return False
     
 
 def signup(username, password):
@@ -42,13 +49,15 @@ def main():
     if result == True: 
       displayDetails()
     else:
-      main()
+        main()
+    
+
 
   if choice == 2:
     username = input("Enter a username: ")
     password = input("Enter a password: ")
     signup(username, password)
-    main()
+
 
 
 
@@ -65,3 +74,4 @@ def displayDetails():
 
 
 main()
+
